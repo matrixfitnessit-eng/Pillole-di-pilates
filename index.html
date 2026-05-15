@@ -450,7 +450,14 @@
 
   <section class="section booking" id="prenota">
     <div class="wrap">
-     <form id="bookingForm">
+     <form 
+  id="bookingForm"
+  action="https://script.google.com/macros/s/AKfycbzgZi_7jpCIfv_Xoe0K_g7R6wcqe8eMIXepN6k41deWiJOoI6G0j8XPsgL3442VkpU/exec"
+  method="POST"
+  target="hidden_iframe"
+>
+       <iframe name="hidden_iframe" style="display:none;"></iframe>
+       
         <div class="form-title">
           <h2>Prenota il tuo slot</h2>
           <span>La prenotazione è gratuita, fino a esaurimento posti.</span>
@@ -569,45 +576,22 @@
     }
   }
 
-  document.getElementById('giorno')
-    .addEventListener('change', checkDisponibilita);
+  document.getElementById('bookingForm').addEventListener('submit', function() {
 
-  document.getElementById('slot')
-    .addEventListener('change', checkDisponibilita);
+  const submit = document.querySelector('button[type="submit"]');
 
-  document.getElementById('bookingForm').addEventListener('submit', async function(e) {
-  e.preventDefault();
+  submit.textContent = 'Prenotazione inviata';
+  submit.style.background = '#2e7d32';
 
-  checkDisponibilita();
+  setTimeout(() => {
+    document.getElementById('bookingForm').reset();
+    aggiornaDisponibilita();
 
-  const form = e.target;
-  const formData = new FormData(form);
+    submit.textContent = 'Conferma prenotazione';
+    submit.style.background = '#e30613';
 
-  try {
-    const response = await fetch(SCRIPT_URL, {
-      method: 'POST',
-      body: formData
-    });
+  }, 2000);
 
-    const result = await response.json();
-
-    if (result.success) {
-      alert(
-        result.waitlist
-          ? 'Sei stato inserito in lista d’attesa.'
-          : 'Prenotazione confermata correttamente.'
-      );
-
-      form.reset();
-      aggiornaDisponibilita();
-
-    } else {
-      alert(result.message || 'Errore durante la prenotazione.');
-    }
-
-  } catch (error) {
-    alert('Errore durante l’invio. Riprova più tardi.');
-  }
 });
 
 aggiornaDisponibilita();
