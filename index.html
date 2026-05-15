@@ -499,6 +499,9 @@
               <option value="15:00">15:00</option>
               <option value="17:00">17:00</option>
             </select>
+            <p id="postiDisponibili" style="font-size:13px;font-weight:700;margin-top:6px;color:#666;">
+  Seleziona giorno e orario per vedere i posti disponibili.
+</p>
           </div>
         </div>
 
@@ -538,7 +541,8 @@
       availabilityData = await response.json();
 
       checkDisponibilita();
-
+const waitlist = document.getElementById('waitlist');
+      
     } catch (error) {
       console.warn('Disponibilità non caricata', error);
     }
@@ -551,22 +555,6 @@
 
     const submit = document.querySelector('button[type="submit"]');
     const waitlist = document.getElementById('waitlist');
-
-    if (!giorno || !slot) {
-      submit.textContent = 'Conferma prenotazione';
-      waitlist.value = 'false';
-      return;
-    }
-
-    const chiave = giorno + '|' + slot;
-    const prenotati = availabilityData[chiave] || 0;
-
-    if (prenotati >= MAX_POSTI) {
-
-      submit.textContent = 'Prenotati come riserva';
-      waitlist.value = 'true';
-
-      submit.style.background = '#444';
 
     } else {
 
