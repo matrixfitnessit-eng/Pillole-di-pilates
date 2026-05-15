@@ -494,56 +494,75 @@
         </div>
 
         <div class="submit-row">
-          <button class="btn" type="submit">Conferma prenotazione</button>
-        </div>
-      </form>
-    </div>
+  <button class="btn" type="submit">Conferma prenotazione</button>
+  <input type="hidden" id="waitlist" name="waitlist" value="false">
+</div>
   </section>
 
   <footer>
     <strong>Matrix Fitness Italia</strong> · Pillole di Pilates · In partnership con FIF e Pilates Factory
   </footer>
-  <script>
-    const SCRIPT_URL = 'INSERISCI_QUI_ENDPOINT_GOOGLE_SCRIPT';
-    const MAX_POSTI = 4;
+  
+<script>
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzgZi_7jpCIfv_Xoe0K_g7R6wcqe8eMIXepN6k41deWiJOoI6G0j8XPsgL3442VkpU/exec';
+  const MAX_POSTI = 4;
+  let availabilityData = {};
 
-    async function aggiornaDisponibilita() {
-      if (!SCRIPT_URL || SCRIPT_URL.includes('INSERISCI_QUI')) return;
+  async function aggiornaDisponibilita() {
+    try {
+      const response = await fetch(SCRIPT_URL + '?action=availability');
+      availabilityData = await response.json();
 
-      try {
-        const response = await fetch(SCRIPT_URL + '?action=availability');
-        const data = await response.json();
-        const giornoSelect = document.getElementById('giorno');
-        const slotSelect = document.getElementById('slot');
+      checkDisponibilita();
 
-        function checkDisponibilita() {
-          const giorno = giornoSelect.value;
-          const slot = slotSelect.value;
-          const chiave = giorno + '|' + slot;
-          const prenotati = data[chiave] || 0;
-          const submit = document.querySelector('button[type="submit"]');
+    } catch (error) {
+      console.warn('Disponibilità non caricata', error);
+    }
+  }
 
-          if (giorno && slot && prenotati >= MAX_POSTI) {
-            submit.disabled = true;
-            submit.textContent = 'Slot sold out';
-            submit.style.opacity = '0.45';
-            submit.style.cursor = 'not-allowed';
-          } else {
-            submit.disabled = false;
-            submit.textContent = 'Conferma prenotazione';
-            submit.style.opacity = '1';
-            submit.style.cursor = 'pointer';
-          }
-        }
+  function checkDisponibilita() {
 
-        giornoSelect.addEventListener('change', checkDisponibilita);
-        slotSelect.addEventListener('change', checkDisponibilita);
-      } catch (error) {
-        console.warn('Disponibilità non caricata', error);
-      }
+    const giorno = document.getElementById('giorno').value;
+    const slot = document.getElementById('slot').value;
+
+    const submit = document.querySelector('button[type="submit"]');
+    const waitlist = document.getElementById('waitlist');
+
+    if (!giorno || !slot) {
+      submit.textContent = 'Conferma prenotazione';
+      waitlist.value = 'false';
+      return;
     }
 
-    aggiornaDisponibilita();
-  </script>
-</body>
-</html>
+    const chiave = giorno + '|' + slot;
+    const prenotati = availabilityData[chiave] || 0;
+
+    if (prenotati >= MAX_POSTI) {
+
+      submit.textContent = 'Prenotati come riserva';
+      waitlist.value = 'true';
+
+      submit.style.background = '#444';
+
+    } else {
+
+      submit.textContent = 'Conferma prenotazione';
+      waitlist.value = 'false';
+
+      submit.style.background = '#e30613';
+    }
+  }
+
+  document.getElementById('giorno')
+    .addEventListener('change', checkDisponibilita);
+
+  document.getElementById('slot')
+    .addEventListener('change', checkDisponibilita);
+
+  document.querySelector('form')
+    .addEventListener('submit', function () {
+      checkDisponibilita();
+    });
+
+  aggiornaDisponibilita();
+</script>
