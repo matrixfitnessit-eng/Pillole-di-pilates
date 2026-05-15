@@ -597,9 +597,10 @@
           <label class="check"><input type="checkbox" name="newsletter"><span>Desidero ricevere comunicazioni e aggiornamenti da Matrix Fitness Italia.</span></label>
         </div>
 
-        <div class="submit-row">
+       <div class="submit-row">
   <button class="btn" type="submit">Conferma prenotazione</button>
   <input type="hidden" id="waitlist" name="waitlist" value="false">
+  <input type="hidden" id="slotHidden" name="slot" value="">
 </div>
    </form>
   </section>
@@ -624,68 +625,44 @@
   }
 
   function checkDisponibilita() {
-  const giorno = document.getElementById('giorno').value;
-  const slot = giorno ? giorno.split(' - ').pop() : "";
+    const giorno = document.getElementById('giorno').value;
+    const slot = giorno ? giorno.split(' - ').pop() : "";
 
-  const submit = document.querySelector('button[type="submit"]');
-  const waitlist = document.getElementById('waitlist');
-  const postiDisponibili = document.getElementById('postiDisponibili');
+    const submit = document.querySelector('button[type="submit"]');
+    const waitlist = document.getElementById('waitlist');
+    const postiDisponibili = document.getElementById('postiDisponibili');
 
-  if (!giorno) {
-    submit.textContent = 'Conferma prenotazione';
-    waitlist.value = 'false';
-    postiDisponibili.textContent = 'Seleziona uno slot per vedere i posti disponibili.';
-    postiDisponibili.style.color = '#666';
-    submit.style.background = '#e30613';
-    return;
+    if (!giorno) {
+      submit.textContent = 'Conferma prenotazione';
+      waitlist.value = 'false';
+      postiDisponibili.textContent = 'Seleziona uno slot per vedere i posti disponibili.';
+      postiDisponibili.style.color = '#666';
+      submit.style.background = '#e30613';
+      return;
+    }
+
+    const chiave = giorno + '|' + slot;
+    const prenotati = availabilityData[chiave] || 0;
+    const disponibili = Math.max(MAX_POSTI - prenotati, 0);
+
+    if (prenotati >= MAX_POSTI) {
+      submit.textContent = 'Prenotati come riserva';
+      waitlist.value = 'true';
+      submit.style.background = '#444';
+      postiDisponibili.textContent = 'Slot pieno: puoi registrarti come riserva.';
+      postiDisponibili.style.color = '#444';
+    } else {
+      submit.textContent = 'Conferma prenotazione';
+      waitlist.value = 'false';
+      submit.style.background = '#e30613';
+      postiDisponibili.textContent = disponibili === 1
+        ? 'Resta 1 posto disponibile.'
+        : 'Restano ' + disponibili + ' posti disponibili.';
+      postiDisponibili.style.color = '#e30613';
+    }
   }
 
-  const chiave = giorno + '|' + slot;
-  const prenotati = availabilityData[chiave] || 0;
-  const disponibili = Math.max(MAX_POSTI - prenotati, 0);
-
-  if (prenotati >= MAX_POSTI) {
-    submit.textContent = 'Prenotati come riserva';
-    waitlist.value = 'true';
-    submit.style.background = '#444';
-    postiDisponibili.textContent = 'Slot pieno: puoi registrarti come riserva.';
-    postiDisponibili.style.color = '#444';
-  } else {
-    submit.textContent = 'Conferma prenotazione';
-    waitlist.value = 'false';
-    submit.style.background = '#e30613';
-    postiDisponibili.textContent = disponibili === 1
-      ? 'Resta 1 posto disponibile.'
-      : 'Restano ' + disponibili + ' posti disponibili.';
-    postiDisponibili.style.color = '#e30613';
-  }
-}
-  
-function aggiornaOrari() {
-
-  const giorno = document.getElementById('giorno').value;
-  const slot = document.getElementById('slot');
-
-  const option16 = slot.querySelector('option[value="16:00"]');
-  const option17 = slot.querySelector('option[value="17:00"]');
-
-  if (giorno.includes('Domenica')) {
-
-    option16.style.display = 'block';
-    option17.style.display = 'none';
-
-  } else {
-
-    option16.style.display = 'none';
-    option17.style.display = 'block';
-  }
-}
-  
-  document.getElementById('giorno').addEventListener('change', function() {
-  aggiornaOrari();
-  checkDisponibilita();
-});
-  
+  document.getElementById('giorno').addEventListener('change', checkDisponibilita);
 
   document.getElementById('bookingForm').addEventListener('submit', function() {
     checkDisponibilita();
@@ -700,14 +677,13 @@ function aggiornaOrari() {
     submit.style.background = '#2e7d32';
 
     setTimeout(() => {
-  document.getElementById('bookingForm').reset();
-  aggiornaOrari();
-  aggiornaDisponibilita();
+      document.getElementById('bookingForm').reset();
+      aggiornaDisponibilita();
 
-  submit.textContent = 'Conferma prenotazione';
-  submit.style.background = '#e30613';
-}, 2000);
-  
-  aggiornaOrari();
+      submit.textContent = 'Conferma prenotazione';
+      submit.style.background = '#e30613';
+    }, 2000);
+  });
+
   aggiornaDisponibilita();
 </script>
