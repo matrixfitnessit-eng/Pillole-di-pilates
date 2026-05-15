@@ -539,49 +539,71 @@
     try {
       const response = await fetch(SCRIPT_URL + '?action=availability');
       availabilityData = await response.json();
-
       checkDisponibilita();
-const waitlist = document.getElementById('waitlist');
-      
     } catch (error) {
       console.warn('Disponibilità non caricata', error);
     }
   }
 
   function checkDisponibilita() {
-
     const giorno = document.getElementById('giorno').value;
     const slot = document.getElementById('slot').value;
+    const submit = document.querySelector('button[type="submit"]');
+    const waitlist = document.getElementById('waitlist');
+    const postiDisponibili = document.getElementById('postiDisponibili');
+
+    if (!giorno || !slot) {
+      submit.textContent = 'Conferma prenotazione';
+      waitlist.value = 'false';
+      postiDisponibili.textContent = 'Seleziona giorno e orario per vedere i posti disponibili.';
+      postiDisponibili.style.color = '#666';
+      submit.style.background = '#e30613';
+      return;
+    }
+
+    const chiave = giorno + '|' + slot;
+    const prenotati = availabilityData[chiave] || 0;
+    const disponibili = Math.max(MAX_POSTI - prenotati, 0);
+
+    if (prenotati >= MAX_POSTI) {
+      submit.textContent = 'Prenotati come riserva';
+      waitlist.value = 'true';
+      submit.style.background = '#444';
+      postiDisponibili.textContent = 'Slot pieno: puoi registrarti come riserva.';
+      postiDisponibili.style.color = '#444';
+    } else {
+      submit.textContent = 'Conferma prenotazione';
+      waitlist.value = 'false';
+      submit.style.background = '#e30613';
+      postiDisponibili.textContent = disponibili === 1
+        ? 'Resta 1 posto disponibile.'
+        : 'Restano ' + disponibili + ' posti disponibili.';
+      postiDisponibili.style.color = '#e30613';
+    }
+  }
+
+  document.getElementById('giorno').addEventListener('change', checkDisponibilita);
+  document.getElementById('slot').addEventListener('change', checkDisponibilita);
+
+  document.getElementById('bookingForm').addEventListener('submit', function() {
+    checkDisponibilita();
 
     const submit = document.querySelector('button[type="submit"]');
     const waitlist = document.getElementById('waitlist');
 
-    } else {
+    submit.textContent = waitlist.value === 'true'
+      ? 'Richiesta riserva inviata'
+      : 'Prenotazione inviata';
 
+    submit.style.background = '#2e7d32';
+
+    setTimeout(() => {
+      document.getElementById('bookingForm').reset();
+      aggiornaDisponibilita();
       submit.textContent = 'Conferma prenotazione';
-      waitlist.value = 'false';
-
       submit.style.background = '#e30613';
-    }
-  }
+    }, 2000);
+  });
 
-  document.getElementById('bookingForm').addEventListener('submit', function() {
-
-  const submit = document.querySelector('button[type="submit"]');
-
-  submit.textContent = 'Prenotazione inviata';
-  submit.style.background = '#2e7d32';
-
-  setTimeout(() => {
-    document.getElementById('bookingForm').reset();
-    aggiornaDisponibilita();
-
-    submit.textContent = 'Conferma prenotazione';
-    submit.style.background = '#e30613';
-
-  }, 2000);
-
-});
-
-aggiornaDisponibilita();
+  aggiornaDisponibilita();
 </script>
