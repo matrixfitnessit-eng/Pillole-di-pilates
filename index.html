@@ -575,10 +575,40 @@
   document.getElementById('slot')
     .addEventListener('change', checkDisponibilita);
 
-  document.querySelector('form')
-    .addEventListener('submit', function () {
-      checkDisponibilita();
+  document.getElementById('bookingForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+
+  checkDisponibilita();
+
+  const form = e.target;
+  const formData = new FormData(form);
+
+  try {
+    const response = await fetch(SCRIPT_URL, {
+      method: 'POST',
+      body: formData
     });
 
-  aggiornaDisponibilita();
+    const result = await response.json();
+
+    if (result.success) {
+      alert(
+        result.waitlist
+          ? 'Sei stato inserito in lista d’attesa.'
+          : 'Prenotazione confermata correttamente.'
+      );
+
+      form.reset();
+      aggiornaDisponibilita();
+
+    } else {
+      alert(result.message || 'Errore durante la prenotazione.');
+    }
+
+  } catch (error) {
+    alert('Errore durante l’invio. Riprova più tardi.');
+  }
+});
+
+aggiornaDisponibilita();
 </script>
