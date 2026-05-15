@@ -624,41 +624,42 @@
   }
 
   function checkDisponibilita() {
-    const giorno = document.getElementById('giorno').value;
-    const slot = giorno.split(' - ').pop();
-    const submit = document.querySelector('button[type="submit"]');
-    const waitlist = document.getElementById('waitlist');
-    const postiDisponibili = document.getElementById('postiDisponibili');
+  const giorno = document.getElementById('giorno').value;
+  const slot = giorno ? giorno.split(' - ').pop() : "";
 
-    if (!giorno || !slot) {
-      submit.textContent = 'Conferma prenotazione';
-      waitlist.value = 'false';
-      postiDisponibili.textContent = 'Seleziona giorno e orario per vedere i posti disponibili.';
-      postiDisponibili.style.color = '#666';
-      submit.style.background = '#e30613';
-      return;
-    }
+  const submit = document.querySelector('button[type="submit"]');
+  const waitlist = document.getElementById('waitlist');
+  const postiDisponibili = document.getElementById('postiDisponibili');
 
-    const chiave = giorno + '|' + slot;
-    const prenotati = availabilityData[chiave] || 0;
-    const disponibili = Math.max(MAX_POSTI - prenotati, 0);
-
-    if (prenotati >= MAX_POSTI) {
-      submit.textContent = 'Prenotati come riserva';
-      waitlist.value = 'true';
-      submit.style.background = '#444';
-      postiDisponibili.textContent = 'Slot pieno: puoi registrarti come riserva.';
-      postiDisponibili.style.color = '#444';
-    } else {
-      submit.textContent = 'Conferma prenotazione';
-      waitlist.value = 'false';
-      submit.style.background = '#e30613';
-      postiDisponibili.textContent = disponibili === 1
-        ? 'Resta 1 posto disponibile.'
-        : 'Restano ' + disponibili + ' posti disponibili.';
-      postiDisponibili.style.color = '#e30613';
-    }
+  if (!giorno) {
+    submit.textContent = 'Conferma prenotazione';
+    waitlist.value = 'false';
+    postiDisponibili.textContent = 'Seleziona uno slot per vedere i posti disponibili.';
+    postiDisponibili.style.color = '#666';
+    submit.style.background = '#e30613';
+    return;
   }
+
+  const chiave = giorno + '|' + slot;
+  const prenotati = availabilityData[chiave] || 0;
+  const disponibili = Math.max(MAX_POSTI - prenotati, 0);
+
+  if (prenotati >= MAX_POSTI) {
+    submit.textContent = 'Prenotati come riserva';
+    waitlist.value = 'true';
+    submit.style.background = '#444';
+    postiDisponibili.textContent = 'Slot pieno: puoi registrarti come riserva.';
+    postiDisponibili.style.color = '#444';
+  } else {
+    submit.textContent = 'Conferma prenotazione';
+    waitlist.value = 'false';
+    submit.style.background = '#e30613';
+    postiDisponibili.textContent = disponibili === 1
+      ? 'Resta 1 posto disponibile.'
+      : 'Restano ' + disponibili + ' posti disponibili.';
+    postiDisponibili.style.color = '#e30613';
+  }
+}
   
 function aggiornaOrari() {
 
@@ -685,7 +686,6 @@ function aggiornaOrari() {
   checkDisponibilita();
 });
   
-  document.getElementById('slot').addEventListener('change', checkDisponibilita);
 
   document.getElementById('bookingForm').addEventListener('submit', function() {
     checkDisponibilita();
