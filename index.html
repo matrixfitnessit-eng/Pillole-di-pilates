@@ -667,25 +667,41 @@
   document.getElementById('giorno').addEventListener('change', checkDisponibilita);
 
   document.getElementById('bookingForm').addEventListener('submit', function() {
-    checkDisponibilita();
+  checkDisponibilita();
 
-    const submit = document.querySelector('button[type="submit"]');
-    const waitlist = document.getElementById('waitlist');
+  const form = document.getElementById('bookingForm');
+  const submit = document.querySelector('button[type="submit"]');
+  const waitlist = document.getElementById('waitlist');
+  const postiDisponibili = document.getElementById('postiDisponibili');
 
-    submit.textContent = waitlist.value === 'true'
-      ? 'Richiesta riserva inviata'
-      : 'Prenotazione inviata';
+  submit.disabled = true;
+  submit.style.background = '#2e7d32';
+  submit.style.cursor = 'not-allowed';
+  submit.style.opacity = '1';
 
-    submit.style.background = '#2e7d32';
+  if (waitlist.value === 'true') {
+    submit.textContent = 'Richiesta riserva inviata';
+    postiDisponibili.textContent = 'Richiesta inviata correttamente. Sei stato inserito in lista d’attesa.';
+    postiDisponibili.style.color = '#2e7d32';
+  } else {
+    submit.textContent = 'Prenotazione inviata';
+    postiDisponibili.textContent = 'Prenotazione inviata correttamente. Riceverai una mail di conferma.';
+    postiDisponibili.style.color = '#2e7d32';
+  }
 
-    setTimeout(() => {
-      document.getElementById('bookingForm').reset();
-      aggiornaDisponibilita();
+  setTimeout(() => {
+    form.reset();
+    aggiornaDisponibilita();
 
-      submit.textContent = 'Conferma prenotazione';
-      submit.style.background = '#e30613';
-    }, 2000);
-  });
+    submit.disabled = false;
+    submit.textContent = 'Conferma prenotazione';
+    submit.style.background = '#e30613';
+    submit.style.cursor = 'pointer';
+
+    postiDisponibili.textContent = 'Seleziona uno slot per vedere i posti disponibili.';
+    postiDisponibili.style.color = '#666';
+  }, 7000);
+});
 
   aggiornaDisponibilita();
 </script>
