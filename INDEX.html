@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pillole di Pilates | Matrix Fitness Italia</title>
+  <style>
+    :root {
+      --red: #e30613;
+      --black: #050505;
+      --dark: #111;
+      --white: #fff;
+      --light: #f4f4f4;
+      --grey: #666;
+      --border: #e1e1e1;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--light);
+      color: var(--black);
+      line-height: 1.45;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .hero {
+      background: linear-gradient(135deg, #000 0%, #141414 68%, #250006 100%);
+      color: var(--white);
+      padding: 48px 6vw 54px;
+    }
+
+    .hero-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 42px;
+      align-items: center;
+    }
+
+    .kicker {
+      color: var(--red);
+      text-transform: uppercase;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .13em;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      font-size: clamp(44px, 6vw, 78px);
+      line-height: .95;
+      text-transform: uppercase;
+      letter-spacing: -.05em;
+      margin-bottom: 18px;
+    }
+
+    .intro {
+      max-width: 680px;
+      font-size: 20px;
+      color: #e7e7e7;
+      margin-bottom: 26px;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    .pill {
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 999px;
+      padding: 9px 14px;
+      font-size: 14px;
+      font-weight: 700;
+      background: rgba(255,255,255,.06);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 50px;
+      padding: 0 24px;
+      border-radius: 999px;
+      background: var(--red);
+      color: #fff;
+      text-transform: uppercase;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: .04em;
+      border: 0;
+      cursor: pointer;
+    }
+
+    .video-box {
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 24px;
+      padding: 12px;
+    }
+
+    video {
+      width: 100%;
+      display: block;
+      border-radius: 18px;
+      aspect-ratio: 9 / 16;
+      object-fit: cover;
+      background: #000;
+    }
+
+    .section {
+      padding: 42px 6vw;
+    }
+
+    .wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+
+    .partners {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .partner-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+      flex-wrap: wrap;
+    }
+
+    .partner-text h2 {
+      font-size: 28px;
+      text-transform: uppercase;
+      letter-spacing: -.03em;
+      margin-bottom: 6px;
+    }
+
+    .partner-text p {
+      color: var(--grey);
+      font-size: 16px;
+    }
+
+    .logos {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      flex-wrap: wrap;
+    }
+
+    .logo-card {
+      width: 190px;
+      height: 86px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+    }
+
+    .logo-card img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .schedule-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      align-items: end;
+      margin-bottom: 22px;
+    }
+
+    .schedule-head h2 {
+      font-size: clamp(32px, 4vw, 48px);
+      text-transform: uppercase;
+      letter-spacing: -.04em;
+    }
+
+    .schedule-head p {
+      color: var(--grey);
+      max-width: 470px;
+      font-size: 16px;
+    }
+
+    .days {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .day {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 20px;
+    }
+
+    .day h3 {
+      font-size: 24px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .trainer {
+      min-height: 45px;
+      color: var(--grey);
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+
+    .trainer strong { color: #000; }
+
+    .slot-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .slot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      background: #f7f7f7;
+      border-radius: 12px;
+      padding: 11px 12px;
+      font-weight: 800;
+    }
+
+    .slot small {
+      color: var(--red);
+      font-weight: 800;
+      font-size: 12px;
+    }
+
+    .booking {
+      background: #fff;
+      border-top: 1px solid var(--border);
+    }
+
+    form {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 24px;
+    }
+
+    .form-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .form-title h2 {
+      font-size: 30px;
+      text-transform: uppercase;
+      letter-spacing: -.03em;
+    }
+
+    .form-title span {
+      color: var(--red);
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field.wide { grid-column: span 2; }
+
+    label {
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    input, select {
+      width: 100%;
+      border: 1px solid #d5d5d5;
+      border-radius: 12px;
+      min-height: 46px;
+      padding: 10px 12px;
+      font-family: inherit;
+      font-size: 14px;
+      background: #fff;
+    }
+
+    .checks {
+      display: grid;
+      gap: 10px;
+      margin: 16px 0 18px;
+      color: #444;
+      font-size: 13px;
+    }
+
+    .check {
+      display: grid;
+      grid-template-columns: 18px 1fr;
+      gap: 10px;
+      align-items: start;
+    }
+
+    .check input { width: 18px; min-height: 18px; margin-top: 1px; }
+
+    .submit-row {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    footer {
+      background: #000;
+      color: #aaa;
+      padding: 22px 6vw;
+      font-size: 13px;
+    }
+
+    footer strong { color: #fff; }
+
+    @media (max-width: 1000px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .video-box { max-width: 420px; }
+      .days { grid-template-columns: repeat(2, 1fr); }
+      .form-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 650px) {
+      .hero, .section { padding-left: 22px; padding-right: 22px; }
+      .days, .form-grid { grid-template-columns: 1fr; }
+      .field.wide { grid-column: span 1; }
+      .schedule-head, .form-title { display: block; }
+      .schedule-head p { margin-top: 8px; }
+      .form-title span { display: block; margin-top: 6px; }
+      .submit-row .btn { width: 100%; }
+      .logo-card { width: 150px; height: 74px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div>
+        <div class="kicker">RiminiWellness · Stand Matrix</div>
+        <h1>Pillole<br>di Pilates</h1>
+        <p class="intro">Prenota una mini lezione gratuita di Pilates in piccoli gruppi. Un’esperienza pratica, guidata e pensata per scoprire il lavoro su movimento, controllo e qualità dell’allenamento.</p>
+        <div class="hero-meta">
+          <span class="pill">4 giorni di fiera</span>
+          <span class="pill">4 slot al giorno</span>
+          <span class="pill">Massimo 4 posti</span>
+        </div>
+        <a class="btn" href="#prenota">Prenota il tuo slot</a>
+      </div>
+
+      <div class="video-box">
+        <video controls playsinline poster="images/pilates-cover.jpg">
+          <source src="videos/ReformerSito.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </header>
+
+  <section class="section partners">
+    <div class="wrap partner-row">
+      <div class="partner-text">
+        <h2>In partnership con FIF e Pilates Factory</h2>
+        <p>Le sessioni saranno guidate da trainer Matrix, FIF e Pilates Factory durante i quattro giorni di fiera.</p>
+      </div>
+      <div class="logos">
+        <div class="logo-card"><img src="images/logofif.png" alt="FIF - Federazione Italiana Fitness"></div>
+        <div class="logo-card"><img src="images/LOGO PILATES FACTORY.png" alt="Pilates Factory"></div>
+      </div>
+    </div>
+  </section>
+
+  <main class="section">
+    <div class="wrap">
+      <div class="schedule-head">
+        <h2>Programma</h2>
+        <p>Ogni giorno sono disponibili gli slot delle 10:30, 12:30, 15:00 e 17:00. La capienza è limitata a massimo 4 partecipanti per lezione.</p>
+      </div>
+
+      <div class="days">
+        <article class="day">
+          <h3>Giovedì</h3>
+          <div class="trainer"><strong>Elena Buscone</strong><br>Trainer Matrix</div>
+          <div class="slot-list">
+            <div class="slot">10:30 <small>4 posti</small></div>
+            <div class="slot">12:30 <small>4 posti</small></div>
+            <div class="slot">15:00 <small>4 posti</small></div>
+            <div class="slot">17:00 <small>4 posti</small></div>
+          </div>
+        </article>
+
+        <article class="day">
+          <h3>Venerdì</h3>
+          <div class="trainer"><strong>Trainer FIF</strong><br>In partnership con FIF</div>
+          <div class="slot-list">
+            <div class="slot">10:30 <small>4 posti</small></div>
+            <div class="slot">12:30 <small>4 posti</small></div>
+            <div class="slot">15:00 <small>4 posti</small></div>
+            <div class="slot">17:00 <small>4 posti</small></div>
+          </div>
+        </article>
+
+        <article class="day">
+          <h3>Sabato</h3>
+          <div class="trainer"><strong>Francesca Scagliola</strong><br>Pilates Factory</div>
+          <div class="slot-list">
+            <div class="slot">10:30 <small>4 posti</small></div>
+            <div class="slot">12:30 <small>4 posti</small></div>
+            <div class="slot">15:00 <small>4 posti</small></div>
+            <div class="slot">17:00 <small>4 posti</small></div>
+          </div>
+        </article>
+
+        <article class="day">
+          <h3>Domenica</h3>
+          <div class="trainer"><strong>Francesca Scagliola</strong><br>Pilates Factory</div>
+          <div class="slot-list">
+            <div class="slot">10:30 <small>4 posti</small></div>
+            <div class="slot">12:30 <small>4 posti</small></div>
+            <div class="slot">15:00 <small>4 posti</small></div>
+            <div class="slot">17:00 <small>4 posti</small></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </main>
+
+  <section class="section booking" id="prenota">
+    <div class="wrap">
+      <form action="INSERISCI_QUI_ENDPOINT_GOOGLE_SCRIPT" method="POST">
+        <div class="form-title">
+          <h2>Prenota il tuo slot</h2>
+          <span>La prenotazione è gratuita, fino a esaurimento posti.</span>
+        </div>
+
+        <div class="form-grid">
+          <div class="field">
+            <label for="nome">Nome*</label>
+            <input id="nome" name="nome" type="text" required>
+          </div>
+          <div class="field">
+            <label for="cognome">Cognome*</label>
+            <input id="cognome" name="cognome" type="text" required>
+          </div>
+          <div class="field wide">
+            <label for="email">Email*</label>
+            <input id="email" name="email" type="email" required>
+          </div>
+          <div class="field">
+            <label for="telefono">Telefono*</label>
+            <input id="telefono" name="telefono" type="tel" required>
+          </div>
+          <div class="field wide">
+            <label for="giorno">Giorno*</label>
+            <select id="giorno" name="giorno" required>
+              <option value="">Seleziona</option>
+              <option value="Giovedì - Elena Buscone, Trainer Matrix">Giovedì - Elena Buscone, Trainer Matrix</option>
+              <option value="Venerdì - Trainer FIF">Venerdì - Trainer FIF</option>
+              <option value="Sabato - Francesca Scagliola, Pilates Factory">Sabato - Francesca Scagliola, Pilates Factory</option>
+              <option value="Domenica - Francesca Scagliola, Pilates Factory">Domenica - Francesca Scagliola, Pilates Factory</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="slot">Orario*</label>
+            <select id="slot" name="slot" required>
+              <option value="">Seleziona</option>
+              <option value="10:30">10:30</option>
+              <option value="12:30">12:30</option>
+              <option value="15:00">15:00</option>
+              <option value="17:00">17:00</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="checks">
+          <label class="check"><input type="checkbox" name="privacy" required><span>Ho letto e accetto l’informativa privacy e autorizzo il trattamento dei dati per la gestione della prenotazione.*</span></label>
+          <label class="check"><input type="checkbox" name="newsletter"><span>Desidero ricevere comunicazioni e aggiornamenti da Matrix Fitness Italia.</span></label>
+        </div>
+
+        <div class="submit-row">
+          <button class="btn" type="submit">Conferma prenotazione</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <strong>Matrix Fitness Italia</strong> · Pillole di Pilates · In partnership con FIF e Pilates Factory
+  </footer>
+  <script>
+    const SCRIPT_URL = 'INSERISCI_QUI_ENDPOINT_GOOGLE_SCRIPT';
+    const MAX_POSTI = 4;
+
+    async function aggiornaDisponibilita() {
+      if (!SCRIPT_URL || SCRIPT_URL.includes('INSERISCI_QUI')) return;
+
+      try {
+        const response = await fetch(SCRIPT_URL + '?action=availability');
+        const data = await response.json();
+        const giornoSelect = document.getElementById('giorno');
+        const slotSelect = document.getElementById('slot');
+
+        function checkDisponibilita() {
+          const giorno = giornoSelect.value;
+          const slot = slotSelect.value;
+          const chiave = giorno + '|' + slot;
+          const prenotati = data[chiave] || 0;
+          const submit = document.querySelector('button[type="submit"]');
+
+          if (giorno && slot && prenotati >= MAX_POSTI) {
+            submit.disabled = true;
+            submit.textContent = 'Slot sold out';
+            submit.style.opacity = '0.45';
+            submit.style.cursor = 'not-allowed';
+          } else {
+            submit.disabled = false;
+            submit.textContent = 'Conferma prenotazione';
+            submit.style.opacity = '1';
+            submit.style.cursor = 'pointer';
+          }
+        }
+
+        giornoSelect.addEventListener('change', checkDisponibilita);
+        slotSelect.addEventListener('change', checkDisponibilita);
+      } catch (error) {
+        console.warn('Disponibilità non caricata', error);
+      }
+    }
+
+    aggiornaDisponibilita();
+  </script>
+</body>
+</html>
