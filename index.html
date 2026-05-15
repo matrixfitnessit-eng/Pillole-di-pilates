@@ -625,7 +625,7 @@
 
   function checkDisponibilita() {
     const giorno = document.getElementById('giorno').value;
-    const slot = document.getElementById('slot').value;
+    const slot = giorno.split(' - ').pop();
     const submit = document.querySelector('button[type="submit"]');
     const waitlist = document.getElementById('waitlist');
     const postiDisponibili = document.getElementById('postiDisponibili');
